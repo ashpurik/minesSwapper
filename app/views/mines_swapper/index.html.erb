@@ -1,0 +1,32 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>Random Trades</h1>
+<table id="homeListings">
+	<tr>
+		<td id="homeLeft">
+			<% @items.each do |item| %>
+			 <% if item.isavailable? %>
+				<table id="homeEntries">
+					<thead>
+						<tr>
+							<td>
+								<h4><%= item.title %></h4>
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center" id="homeItemImage">
+								<%= image_tag(item.itemimage) %>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			<% end %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+

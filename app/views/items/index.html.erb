@@ -1,0 +1,54 @@
+<h1>Browsing Available items</h1>
+ <% @items.each do |item| %>
+ <% if item.isavailable? %>
+<table id="itemDisplay">
+  <thead>
+    <tr>
+      <td colspan="2" id="itemTitle"><h2><%= item.title %></h2></td>
+    </tr>
+    <tr>
+      <td colspan="2" id="itemDate">Created On: <%= item.created_at %></td>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td id="itemImage"><%= image_tag(item.itemimage, :width =>'120px', :height =>'120px') %></td>
+        <td>
+          <table id="itemInfo">
+              <tr>
+                <td id="leftCell">User:</td>
+                <td><%= User.find_by_id(item.user_id).username %></td>
+              </tr>
+              <tr>
+                <td id="leftCell" colspan="2">Description:</td>
+              </tr>
+              <tr>
+                <td colspan="2"><%= sanitize(item.description) %>
+                </td>
+              </tr>
+            </table>
+          </td>
+      </tr>
+
+  </tbody>
+  <tr>
+    <td id="buttons" colspan="2">
+
+      <%= link_to 'Show', item %>
+      <% if current_user.id == item.user_id %> 
+      |
+      <%= link_to 'Edit', edit_item_path(item) %>
+      |
+      <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <% else %>
+      |
+      <%= link_to 'Request', new_trade_path(:item_id => item.id) %>
+      <% end %>
+    </td>
+  </tr>
+</table>
+  <% end %>
+<% end %>
+<br>
+
+<%= link_to 'New Item', new_item_path %>

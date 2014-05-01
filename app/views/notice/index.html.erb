@@ -1,0 +1,57 @@
+<h1>Notice page for <%=current_user.username%></h1>
+
+<table id='recievedTable'>
+	<thead>
+		<tr>
+			<td  id="thead1" colspan="4">
+				<h2>Trades you have recieved</h2>
+			</td>
+		</tr>
+	</thead>
+	<thead id="thead2">
+		<tr>
+			<td>User</td>
+			<td>Your Item</td>
+			<td>Their Offer</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<%#recieving trades should not be over 20%>
+	<%#Trade.where(id = value) will return a database relation object which you can call take(n) to take up to n entries from and are put in an array %>
+	<%Trade.where("user1 = #{current_user.id} and status=0").take(20).each do |trade| %>
+		<tr>
+			<td><%=User.find_by_id(trade.user2).username%></td>
+			<td><%=Item.find_by_id(trade.user1_item).title%></td>
+			<td><%=Item.find_by_id(trade.user2_item).title%></td>
+			<td><%=trade.description%></td>
+			<td><%=button_to('Accept trade', trade_path(:id => trade.id, :status => 1), :method => :put) %></td>
+			<td><%=button_to('Decline trade', trade_path(:id => trade.id, :status => 2), :method => :put) %></td>
+		</tr>
+	<%end%>
+</table>
+
+<table id='pendingTable'>
+	<thead>
+		<tr>
+			<td  id="thead1" colspan="4">
+				<h2>Trades you sent</h2>
+			</td>
+		</tr>
+	</thead>
+	<thead id="thead2">
+		<tr>
+			<td>User</td>
+			<td>Their Item</td>
+			<td>Your Offer</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<%#pending trades should not be over 20%>
+	<%#Trade.where(id = value) will return a database relation object which you can call take(n) to take up to n entries from and are put in an array %>
+	<%Trade.where("user2 = #{current_user.id} and status=0").take(20).each do |trade| %>
+		<td><%=User.find_by_id(trade.user1).username %></td>
+		<td><%=Item.find_by_id(trade.user1_item).title %></td>
+		<td><%=Item.find_by_id(trade.user2_item).title %></td>
+		<td><%=trade.description%></td>
+	<%end%>
+</table>

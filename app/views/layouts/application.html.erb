@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MinesSwapper Bartering System</title>
+  <%= stylesheet_link_tag    "application", "barter", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= controller.controller_name %>">
+	<div id="banner">
+		<%= link_to image_tag("ms_logo.png", :alt => "MinesSwapper"), "/" %>
+		<%= @page_title || "MinesSwapper" %>
+	</div>
+	<nav>
+		<ul id="regNav">
+			<li>
+				<a href="/items">Browse All</a>
+			</li>
+			<li>
+				<%= link_to 'Create New Item', new_item_path %>
+			</li>
+			<li>
+				<a href="/trades">View Trades</a>
+			</li>
+			<li>
+				<% if current_user %>
+					<%= link_to "Edit Profile", edit_user_path(current_user.id) %>
+			</li>
+			<li id="notifications">
+				<% if Trade.all(:conditions => ['user1 in (?) and status = 0', current_user.id]).length > 0 %>
+					<%= link_to "YOU HAVE NEW NOTIFICATIONS", notice_path %>
+				<% else %>
+					<%= link_to "Notifications", notice_path %>
+				<% end %>
+			</li>
+			<li>
+				<%= link_to "Logout", :logout, method: :post %> 
+			</li>
+			<li>
+				<% else %>
+					<%= link_to "Register", new_user_path %>
+			</li>
+			<li>
+				<%= link_to "Login", :login %>
+			</li>
+			<% end %>
+		</ul>
+	</nav>
+	<div id="content">
+		<div class="block"></div>
+		<section>
+			<%= yield %>
+		</section>
+	</div>
+	<footer>
+		Copyright &copy; 2014 | Maria Deslis | Andrew Koelling | Anastasia Shpurik
+	</footer>
+</body>
+</html>

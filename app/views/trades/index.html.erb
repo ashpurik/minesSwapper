@@ -1,0 +1,33 @@
+<h1>Listing Trades</h1>
+
+<table id="tradeTable">
+  <thead id="thead2">
+    <tr>
+      <th>Original Poster</th>
+      <th>User Who Offered</th>
+      <th>Original</th>
+      <th>Offered</th>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trades.each do |trade| %>
+      <tr>
+        <td><%= User.find_by_id(trade.user1).username %></td>
+        <td><%= User.find_by_id(trade.user2).username %></td>
+        <td><%= Item.find_by_id(trade.user1_item).title %></td>
+        <td><%= Item.find_by_id(trade.user2_item).title %></td>
+				<% if trade.status == 0 %>
+       	 <td>Pending</td>
+			 <%elsif trade.status == 1 %>
+				 <td>Accepted</td>
+			 <%elsif trade.status == 2 %>
+				 <td>Declined</td>
+			 <%end%>
+        <td><%= trade.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

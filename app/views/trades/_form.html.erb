@@ -1,0 +1,25 @@
+<%= form_for(@trade) do |f| %>
+  <% if @trade.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@trade.errors.count, "error") %> prohibited this trade from being saved:</h2>
+
+      <ul>
+      <% @trade.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <% items_array = Item.all(:conditions => ['user_id in (?) and isavailable=?', current_user.id, true]).map { |t| [t.title, t.id]} %>
+    <%= f.select :user2_item, items_array, prompt: 'Select an item to trade' %>
+  </div>
+  <div class="field">
+    <%= f.label "Add a Message" %><br>
+    <%= f.text_area :description %>
+  </div>
+  <input type="hidden", name="item_id" value=<%=params[:item_id]%> />
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
